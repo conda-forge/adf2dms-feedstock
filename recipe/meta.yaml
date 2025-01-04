@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/adf2dms-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/adf2dms-{{ version }}.tar.gz
   sha256: ac5482522563925179e57b0612ade62264f6828622df0f1196879033058a4746
 
 build:
@@ -14,16 +14,16 @@ build:
     - adf2dms = adf2dms.main:main
   noarch: python
   script: {{ PYTHON }} -m pip install . -vv
-  number: 0
+  number: 1
 
 requirements:
   host:
     - pip
-    - python >=3.9
+    - python {{ python_min }}
     - setuptools
   run:
     - crccheck
-    - python >=3.9
+    - python >={{ python_min }}
 
 test:
   imports:
@@ -33,6 +33,7 @@ test:
     - adf2dms --help
   requires:
     - pip
+    - python {{ python_min }}
 
 about:
   home: https://github.com/dlitz/adf2dms
