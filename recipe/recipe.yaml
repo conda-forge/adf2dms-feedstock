@@ -1,0 +1,53 @@
+schema_version: 1
+
+context:
+  name: adf2dms
+  version: "0.0.1"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/adf2dms-${{ version }}.tar.gz
+  sha256: ac5482522563925179e57b0612ade62264f6828622df0f1196879033058a4746
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+  python:
+    entry_points:
+      - adf2dms = adf2dms.main:main
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - setuptools
+  run:
+    - crccheck
+    - python >=${{ python_min }}
+
+tests:
+  - python:
+      imports:
+        - adf2dms
+      pip_check: true
+      python_version: ${{ python_min }}
+  - requirements:
+      run:
+        - pip
+        - python ${{ python_min }}.*
+    script:
+      - adf2dms --help
+
+about:
+  summary: Convert Amiga disk images from ADF to DMS (DiskMasher) format
+  license: MIT
+  license_file: LICENSE.txt
+  homepage: https://github.com/dlitz/adf2dms
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
